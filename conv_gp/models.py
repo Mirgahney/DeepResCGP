@@ -247,7 +247,7 @@ class ModelBuilder(object):
             return None
 
     # resnet block self, NHWC_X, M, feature_map, filter_size, stride, layer_params=None
-    def _residual_block(H_X, M, feature_map, filter_size = 3, stride = 1, layer_params, name = 'unit'):
+    def _residual_block(H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'):
         num_channel = H_X.get_shape().as_list()[-1]
         with tf.variable_scope(name) as scope:
             print('\tBuilding residual unit: %s' % scope.name)
