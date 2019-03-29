@@ -309,12 +309,12 @@ class ModelBuilder(object):
             layers.append(conv_layer)
 
             for i in range(res_blocks):
-            	conv_layer, H_X = self._residual_block(H_X, M, feature_map, 3, 1, layer_params)
-            	layers.append(conv_layer)
+                conv_layer, H_X = self._residual_block(H_X, M, feature_map, 3, 1, layer_params)
+                layers.append(conv_layer)
 
         return layers, H_X
 
-	def _bn(self, x, name="bn"):
+    def _bn(self, x, name="bn"):
         x = utils._bn(x, self.is_train, self._global_step, name)
         # f = 8 * self._get_data_size(x)
         # w = 4 * x.get_shape().as_list()[-1]
