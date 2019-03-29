@@ -255,10 +255,10 @@ class ModelBuilder(object):
             shortcut = H_X
 
             # pading to get the same input dimensionality 
-			paddings = tf.constant([[1, 1,], [1, 1]])
+            paddings = tf.constant([[1, 1,], [1, 1]])
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
-			H_X = tf.pad(H_X, paddings, "CONSTANT")
+            H_X = tf.pad(H_X, paddings, "CONSTANT")
             
             # Residual
             res_layers = []
@@ -270,7 +270,7 @@ class ModelBuilder(object):
             #H_X = self._relu(H_X, name='relu_1')
 
             # pading to get the same input dimensionality 
-			H_X = tf.pad(H_X, paddings, "CONSTANT")
+            H_X = tf.pad(H_X, paddings, "CONSTANT")
 
             conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params) # 'conv_2'
             res_layers.append(conv_layer)
