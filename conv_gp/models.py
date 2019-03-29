@@ -263,7 +263,7 @@ class ModelBuilder(object):
             # Residual
             res_layers = []
 
-            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params) # 'conv_1'
+            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_1'
             res_layers.append(conv_layer)
             H_X = self._bn(H_X, name='bn_1')
 
@@ -272,7 +272,7 @@ class ModelBuilder(object):
             # pading to get the same input dimensionality 
             H_X = tf.pad(H_X, paddings, "CONSTANT")
 
-            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params) # 'conv_2'
+            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_2'
             res_layers.append(conv_layer)
 
             H_X = self._bn(H_X, name='bn_2')
