@@ -251,35 +251,35 @@ class ModelBuilder(object):
     # resnet block self, NHWC_X, M, feature_map, filter_size, stride, layer_params=None
     def _residual_block(H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'):
         # num_channel = H_X.get_shape().as_list()[-1]
-        with tf.variable_scope(name) as scope:
-            print('\tBuilding residual unit: %s' % scope.name)
+        # with tf.variable_scope(name) as scope:
+        print('\tBuilding residual unit: %s' % name)
             # Shortcut connection
-            shortcut = H_X
+        shortcut = H_X
 
             # pading to get the same input dimensionality 
-            paddings = tf.constant([[1, 1,], [1, 1]])
+        paddings = tf.constant([[1, 1,], [1, 1]])
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
-            H_X = tf.pad(H_X, paddings, "CONSTANT")
+        H_X = tf.pad(H_X, paddings, "CONSTANT")
             
             # Residual
-            res_layers = []
+        res_layers = []
 
-            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_1'
-            res_layers.append(conv_layer)
-            H_X = self._bn(H_X, name='bn_1')
+        conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_1'
+        res_layers.append(conv_layer)
+        H_X = self._bn(H_X, name='bn_1')
 
             #H_X = self._relu(H_X, name='relu_1')
 
             # pading to get the same input dimensionality 
-            H_X = tf.pad(H_X, paddings, "CONSTANT")
+        H_X = tf.pad(H_X, paddings, "CONSTANT")
 
-            conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_2'
-            res_layers.append(conv_layer)
+        conv_layer, H_X = self._conv(H_X, M, feature_map = feature_map, filter_size = filter_size, stride = stride, layer_params = layer_params) # 'conv_2'
+        res_layers.append(conv_layer)
 
-            H_X = self._bn(H_X, name='bn_2')
+        H_X = self._bn(H_X, name='bn_2')
 
-            H_X = H_X + shortcut
+        H_X = H_X + shortcut
             #H_X = self._relu(H_X, name='relu_2')
         return res_layers, H_X
 
@@ -292,7 +292,6 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             layers.append(conv_layer)
         return layers, H_X
@@ -307,7 +306,7 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params, 'unit' + str(i+1))
             layers.append(conv_layer)
 
             for i in range(res_blocks):
