@@ -11,6 +11,8 @@ from views import FullView, RandomPartialView
 from mean_functions import Conv2dMean, IdentityConv2dMean
 from sklearn import cluster
 
+import utils_res  
+
 def parse_ints(int_string):
     if int_string == '':
         return []
@@ -316,7 +318,7 @@ class ModelBuilder(object):
         return layers, H_X
 
     def _bn(self, x, name="bn"):
-        x = utils._bn(x, self.is_train, self._global_step, name)
+        x = utils_res._bn(x, self.is_train, self._global_step, name)
         # f = 8 * self._get_data_size(x)
         # w = 4 * x.get_shape().as_list()[-1]
         # scope_name = tf.get_variable_scope().name + "/" + name
@@ -324,7 +326,7 @@ class ModelBuilder(object):
         return x
 
     def _relu(self, x, name="relu"):
-        x = utils._relu(x, 0.0, name)
+        x = utils_res._relu(x, 0.0, name)
         # f = self._get_data_size(x)
         # scope_name = tf.get_variable_scope().name + "/" + name
         # self._add_flops_weights(scope_name, f, 0)
