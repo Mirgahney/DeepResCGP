@@ -251,12 +251,11 @@ class ModelBuilder(object):
             return None
 
     # resnet block self, NHWC_X, M, feature_map, filter_size, stride, layer_params=None
-    def _residual_block(NHWC_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'):
+    def _residual_block(self, H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'):
         # num_channel = H_X.get_shape().as_list()[-1]
         # with tf.variable_scope(name) as scope:
         print('\tBuilding residual unit: %s' % name)
             # Shortcut connection
-        H_X = NHWC_X
         shortcut = H_X
 
             # pading to get the same input dimensionality 
@@ -313,7 +312,7 @@ class ModelBuilder(object):
             layers.append(conv_layer)
 
             for i in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
-                conv_layer, H_X = self._residual_block(NHWC_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(i+1)))
+                conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(i+1)))
                 layers.append(conv_layer)
 
         return layers, H_X
