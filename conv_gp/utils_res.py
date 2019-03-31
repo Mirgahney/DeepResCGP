@@ -171,7 +171,7 @@ def _add_split_loss(w, input_q, output_q):
     return
 
 
-def _bn(x, is_train, global_step=None, name='bn'):
+def _bn(x, is_train = True, global_step=None, name='bn'):
     moving_average_decay = 0.9
     # moving_average_decay = 0.99
     # moving_average_decay_init = 0.99
