@@ -320,7 +320,7 @@ class ModelBuilder(object):
         return layers, H_X
 
     def _bn(self, x, name="bn"):
-        x = utils_res._bn(x, self.is_train, self._global_step, name)
+        x = utils_res._bn(x, self.is_train, name = name)
         # f = 8 * self._get_data_size(x)
         # w = 4 * x.get_shape().as_list()[-1]
         # scope_name = tf.get_variable_scope().name + "/" + name
