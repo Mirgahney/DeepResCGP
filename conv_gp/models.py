@@ -41,6 +41,7 @@ class ModelBuilder(object):
         self.Y_train = Y_train
         self.model_path = model_path
         self.global_step = None
+        self.is_train = True
 
     def build(self):
         Ms = parse_ints(self.flags.M)
