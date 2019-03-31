@@ -20,7 +20,7 @@ def parse_ints(int_string):
         return [int(i) for i in int_string.split(',')]
 
 def image_HW(patch_count):
-    image_height = tf.int32(tf.sqrt(patch_count))
+    image_height = int(tf.sqrt(patch_count))
     return [image_height, image_height]
 
 def select_initial_inducing_points(X, M):
