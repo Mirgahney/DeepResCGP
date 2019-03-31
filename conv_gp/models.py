@@ -306,11 +306,11 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params, 'unit' + str(i+1))
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             layers.append(conv_layer)
 
             for i in range(res_blocks):
-                conv_layer, H_X = self._residual_block(H_X, M, feature_map, 3, 1, layer_params)
+                conv_layer, H_X = self._residual_block(H_X, M, feature_map, 3, 1, layer_params,  'unit ' + str(i+1))
                 layers.append(conv_layer)
 
         return layers, H_X
