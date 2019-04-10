@@ -260,7 +260,7 @@ class ModelBuilder(object):
         shortcut = H_X
         print(H_X.shape)
             # pading to get the same input dimensionality 
-        paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
+        paddings = tf.constant([[0, 0],[2, 2,], [2, 2],[0, 0]])
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
         # H_X = tf.pad(H_X, paddings, "CONSTANT")
