@@ -21,8 +21,11 @@ def parse_ints(int_string):
 
 def image_HW(patch_count):
     print(type(patch_count))
-    print(type(patch_count) == tf.Dimension)
-    print(type(tf.cast(patch_count, tf.int32)) == tf.Tensor)
+    if type(patch_count) == tf.Dimension :
+        print(patch_count.as_list())
+        print(type(patch_count.as_list()[0])
+        print(type(tf.cast(patch_count, tf.int32)) == tf.Tensor)
+
     print(patch_count)
     image_height = int(np.sqrt(patch_count))
     return [image_height, image_height]
