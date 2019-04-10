@@ -348,6 +348,7 @@ class ModelBuilder(object):
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
+        print(len(feature_maps))
         return layers, H_X
 
     def _bn(self, x, name="bn"):
