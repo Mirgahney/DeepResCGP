@@ -33,7 +33,11 @@ def select_initial_inducing_points(X, M):
 def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride):
     conv = IdentityConv2dMean(filter_size, feature_maps_in, feature_maps_out, stride)
     sess = conv.enquire_session()
-    random_images = np.random.choice(np.arange(NHWC_X.shape[0]), size=1000)
+    if type(NHWC_X.shape[0]) == tf.Dimension:
+        batch = tf.dimension_value(NHWC_X.shape[0])
+    else:
+        batch = NHWC_X.shape[0]
+    random_images = np.random.choice(np.arange(batch), size=1000)
     return sess.run(conv(NHWC_X[random_images]))
 
 class ModelBuilder(object):
