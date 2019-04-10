@@ -67,10 +67,10 @@ class ModelBuilder(object):
         assert len(strides) == len(filter_sizes)
         assert len(feature_maps) == (len(Ms) - 1)
 
-        # conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
-        #         loaded_parameters)
-        conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
-                loaded_parameters = loaded_parameters)
+        conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
+                loaded_parameters)
+        # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        #         loaded_parameters = loaded_parameters)
 
         last_layer_parameters = self._last_layer_parameters(loaded_parameters)
         last_layer = self._last_layer(H_X, Ms[-1], filter_sizes[-1], strides[-1],
@@ -305,6 +305,7 @@ class ModelBuilder(object):
     def _conv_layers(self, Ms, feature_maps, strides, filter_sizes, loaded_parameters={}):
         H_X = self.X_train
         layers = []
+        shapes = []
         for i in range(len(feature_maps)):
             M = Ms[i]
             feature_map = feature_maps[i]
@@ -313,19 +314,23 @@ class ModelBuilder(object):
             layer_params = loaded_parameters.get(i)
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             layers.append(conv_layer)
+            shapes.append(H_X.shape)
+        print(shapes)
         return layers, H_X
     # need to be geralizable 
     def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
         H_X = self.X_train
         layers = []
+        shapes = []
         for i in range(len(feature_maps)):
             M = Ms[i]
             feature_map = feature_maps[i]
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-
+            
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+            shapes.append(H_X.shape)
             # print(conv_layer)
             layers.append(conv_layer)
             # print(layers)
@@ -333,14 +338,15 @@ class ModelBuilder(object):
             if i == 0:
                 for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
                     print('Build residual block ', str(j+1))
-                    print('shape befor residual ', H_X.shape)
+                    # print('shape befor residual ', H_X.shape)
                     conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+                    shapes.append(H_X.shape)
                     # print(conv_layer)
                     for x in conv_layer:
                         layers.append(x)
-            print('shape after residual ',H_X.shape)
+            # print('shape after residual ',H_X.shape)
             # print(layers)
-
+        print(shapes)
         return layers, H_X
 
     def _bn(self, x, name="bn"):
