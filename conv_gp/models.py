@@ -35,18 +35,13 @@ def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride
     sess = conv.enquire_session()
     if type(NHWC_X.shape[0]) == tf.Dimension:
         batch = tf.dimension_value(NHWC_X.shape[0])
-        print(type(batch))
         # print(batch)
         with sess.as_default():
             NHWC_X = NHWC_X.eval()
-            print('eval ', type(NHWC_X.eval()))
     else:
         batch = NHWC_X.shape[0]
-        print(type(batch))
         # print(batch)
     random_images = np.random.choice(np.arange(batch), size=1000)
-    # print(random_images)
-    print(type(NHWC_X))
     return sess.run(conv(NHWC_X[random_images]))
 
 class ModelBuilder(object):
@@ -279,15 +274,17 @@ class ModelBuilder(object):
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
         H_X = tf.pad(H_X, paddings, "CONSTANT")
-        print('res after pad ', type(H_X))
+        # print('res after pad ', type(H_X))
         with tf.Session() as sess:
-                H_X = sess.run(H_X)
-        print('res after pad-eval ', type(H_X))  
+            H_X = sess.run(H_X)
+        # print('res after pad-eval ', type(H_X))  
             # Residual
         res_layers = []
         print(H_X.shape)
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_1'
         res_layers.append(conv_layer)
+        with tf.Session() as sess:
+            H_X = sess.run(H_X)
         print('after conv layer ' ,H_X.shape)
         # H_X = self._bn(H_X, name='bn_1')
 
