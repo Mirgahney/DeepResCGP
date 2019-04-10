@@ -270,7 +270,7 @@ class ModelBuilder(object):
         print(H_X.shape)
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_1'
         res_layers.append(conv_layer)
-        H_X = self._bn(H_X, name='bn_1')
+        # H_X = self._bn(H_X, name='bn_1')
 
             #H_X = self._relu(H_X, name='relu_1')
 
@@ -280,7 +280,7 @@ class ModelBuilder(object):
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_2'
         res_layers.append(conv_layer)
 
-        H_X = self._bn(H_X, name='bn_2')
+        # H_X = self._bn(H_X, name='bn_2')
 
         H_X = H_X + shortcut
             #H_X = self._relu(H_X, name='relu_2')
