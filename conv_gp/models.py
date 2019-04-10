@@ -20,8 +20,8 @@ def parse_ints(int_string):
         return [int(i) for i in int_string.split(',')]
 
 def image_HW(patch_count):
-    patch_count = tf.cast(patch_count, tf.int32)
     print(type(patch_count))
+    print(type(tf.cast(patch_count, tf.int32)))
     print(patch_count)
     image_height = int(np.sqrt(patch_count))
     return [image_height, image_height]
