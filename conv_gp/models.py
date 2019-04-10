@@ -84,19 +84,19 @@ class ModelBuilder(object):
                 layers=layers,
                 minibatch_size=self.flags.batch_size, name='DGP')
 
-    def _conv_layers(self, Ms, feature_maps, strides, filter_sizes, loaded_parameters={}):
-        H_X = self.X_train
-        layers = []
-        for i in range(len(feature_maps)):
-            M = Ms[i]
-            feature_map = feature_maps[i]
-            filter_size = filter_sizes[i]
-            stride = strides[i]
-            layer_params = loaded_parameters.get(i)
+    # def _conv_layers(self, Ms, feature_maps, strides, filter_sizes, loaded_parameters={}):
+    #     H_X = self.X_train
+    #     layers = []
+    #     for i in range(len(feature_maps)):
+    #         M = Ms[i]
+    #         feature_map = feature_maps[i]
+    #         filter_size = filter_sizes[i]
+    #         stride = strides[i]
+    #         layer_params = loaded_parameters.get(i)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
-            layers.append(conv_layer)
-        return layers, H_X
+    #         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+    #         layers.append(conv_layer)
+    #     return layers, H_X
 
     def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, layer_params=None):
         if layer_params is None:
@@ -316,6 +316,7 @@ class ModelBuilder(object):
             layers.append(conv_layer)
             shapes.append(H_X.shape)
         print(shapes)
+        print(len(feature_maps))
         return layers, H_X
     # need to be geralizable 
     def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
