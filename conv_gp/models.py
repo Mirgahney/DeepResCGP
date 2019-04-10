@@ -38,6 +38,7 @@ def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride
         print(type(batch))
         # print(batch)
         with sess.as_default():
+            NHWC_X = NHWC_X.eval()
             print('eval ', type(NHWC_X.eval()))
     else:
         batch = NHWC_X.shape[0]
@@ -279,8 +280,8 @@ class ModelBuilder(object):
 			# rank of 't' is 2.
         H_X = tf.pad(H_X, paddings, "CONSTANT")
         print('res after pad ', type(H_X))
-        with tf.Session() as sess.as_default():
-                H_X = H_X.eval()
+        with tf.Session() as sess:
+                H_X = sess.run(H_X)
         print('res after pad-eval ', type(H_X))  
             # Residual
         res_layers = []
