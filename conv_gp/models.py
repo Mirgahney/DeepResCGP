@@ -23,7 +23,7 @@ def image_HW(patch_count):
     print(type(patch_count))
     if type(patch_count) == tf.Dimension :
         print(tf.dimension_value(patch_count))
-        print(type(tf.dimension_value(patch_count))
+        print(type(tf.dimension_value(patch_count)))
         print(type(tf.cast(patch_count, tf.int32)) == tf.Tensor)
 
     print(patch_count)
