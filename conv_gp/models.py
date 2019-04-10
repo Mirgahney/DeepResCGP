@@ -22,8 +22,8 @@ def parse_ints(int_string):
 def image_HW(patch_count):
     print(type(patch_count))
     if type(patch_count) == tf.Dimension :
-        print(patch_count.as_list())
-        print(type(patch_count.as_list()[0]))
+        print(tf.dimension_value(patch_count))
+        print(type(tf.dimension_value(patch_count))
         print(type(tf.cast(patch_count, tf.int32)) == tf.Tensor)
 
     print(patch_count)
