@@ -37,7 +37,8 @@ def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride
         batch = tf.dimension_value(NHWC_X.shape[0])
         print(type(batch))
         print(batch)
-        print(type(NHWC_X.eval()))
+        with sess.as_default():
+            print(type(NHWC_X.eval()))
     else:
         batch = NHWC_X.shape[0]
         print(type(batch))
