@@ -42,6 +42,8 @@ def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride
         print(type(batch))
         print(batch)
     random_images = np.random.choice(np.arange(batch), size=1000)
+    print(random_images)
+    print(type(NHWC_X))
     return sess.run(conv(NHWC_X[random_images]))
 
 class ModelBuilder(object):
