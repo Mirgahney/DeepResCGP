@@ -36,15 +36,15 @@ def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride
     if type(NHWC_X.shape[0]) == tf.Dimension:
         batch = tf.dimension_value(NHWC_X.shape[0])
         print(type(batch))
-        print(batch)
+        # print(batch)
         with sess.as_default():
-            print(type(NHWC_X.eval()))
+            print('eval ', type(NHWC_X.eval()))
     else:
         batch = NHWC_X.shape[0]
         print(type(batch))
-        print(batch)
+        # print(batch)
     random_images = np.random.choice(np.arange(batch), size=1000)
-    print(random_images)
+    # print(random_images)
     print(type(NHWC_X))
     return sess.run(conv(NHWC_X[random_images]))
 
@@ -278,6 +278,7 @@ class ModelBuilder(object):
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
         H_X = tf.pad(H_X, paddings, "CONSTANT")
+        print('res after pad ', type(H_X))
             
             # Residual
         res_layers = []
@@ -326,6 +327,7 @@ class ModelBuilder(object):
 
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             layers.append(conv_layer)
+            print('conv_1 ', type(H_X))
 
             for i in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
                 print('Build residual block ', str(i+1))
