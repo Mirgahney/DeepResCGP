@@ -335,7 +335,7 @@ class ModelBuilder(object):
                     print('Build residual block ', str(j+1))
                     conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
                     print(conv_layer)
-                    layers.append(conv_layer)
+                    [layers.append(x) for x in conv_layer]
             print(layers)
 
         return layers, H_X
