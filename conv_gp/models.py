@@ -315,7 +315,7 @@ class ModelBuilder(object):
             layers.append(conv_layer)
         return layers, H_X
     # need to be geralizable 
-    def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 3, loaded_parameters={}):
+    def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 0, loaded_parameters={}):
         H_X = self.X_train
         layers = []
         for i in range(len(feature_maps)):
@@ -330,8 +330,8 @@ class ModelBuilder(object):
             # print('conv_1 ', type(H_X))
             if i == 0:
                 for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
-                    print('Build residual block ', str(i+1))
-                    conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(i+1)))
+                    print('Build residual block ', str(j+1))
+                    conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
                     layers.append(conv_layer)
 
         return layers, H_X
