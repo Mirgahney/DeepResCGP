@@ -279,7 +279,7 @@ class ModelBuilder(object):
 			# rank of 't' is 2.
         H_X = tf.pad(H_X, paddings, "CONSTANT")
         print('res after pad ', type(H_X))
-        with tf.InteractiveSession() as sess:
+        with tf.Session() as sess.as_default():
                 H_X = H_X.eval()
         print('res after pad-eval ', type(H_X))  
             # Residual
