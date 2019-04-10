@@ -260,22 +260,23 @@ class ModelBuilder(object):
         shortcut = H_X
         print(H_X.shape)
             # pading to get the same input dimensionality 
-        paddings = tf.constant([[0, 0],[2, 2,], [2, 2],[0, 0]])
+        paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
-        # H_X = tf.pad(H_X, paddings, "CONSTANT")
+        H_X = tf.pad(H_X, paddings, "CONSTANT")
             
             # Residual
         res_layers = []
         print(H_X.shape)
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_1'
         res_layers.append(conv_layer)
+        print('after conv layer ' ,H_X.shape)
         # H_X = self._bn(H_X, name='bn_1')
 
             #H_X = self._relu(H_X, name='relu_1')
 
             # pading to get the same input dimensionality 
-        # H_X = tf.pad(H_X, paddings, "CONSTANT")
+        H_X = tf.pad(H_X, paddings, "CONSTANT")
 
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_2'
         res_layers.append(conv_layer)
