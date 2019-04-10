@@ -279,7 +279,9 @@ class ModelBuilder(object):
 			# rank of 't' is 2.
         H_X = tf.pad(H_X, paddings, "CONSTANT")
         print('res after pad ', type(H_X))
-            
+        with tf.InteractiveSession():
+                H_X = H_X.eval()
+        print('res after pad-eval ', type(H_X))  
             # Residual
         res_layers = []
         print(H_X.shape)
@@ -327,7 +329,7 @@ class ModelBuilder(object):
 
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             layers.append(conv_layer)
-            print('conv_1 ', type(H_X))
+            # print('conv_1 ', type(H_X))
 
             for i in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
                 print('Build residual block ', str(i+1))
