@@ -72,13 +72,13 @@ class ModelBuilder(object):
         conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
                 loaded_parameters = loaded_parameters)
         
-        print('befor last layer ', H_X.shape)
+        # print('befor last layer ', H_X.shape)
         last_layer_parameters = self._last_layer_parameters(loaded_parameters)
         last_layer = self._last_layer(H_X, Ms[-1], filter_sizes[-1], strides[-1],
                 last_layer_parameters)
-        print(H_X.shape)
+        # print(H_X.shape)
         layers = conv_layers + [last_layer]
-
+        print(np.prod(self.X_train.shape[1:]))
         X = self.X_train.reshape(-1, np.prod(self.X_train.shape[1:]))
         return DGP_Base(X, self.Y_train,
                 likelihood=gpflow.likelihoods.MultiClass(10),
