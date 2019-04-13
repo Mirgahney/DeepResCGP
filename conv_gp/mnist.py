@@ -57,7 +57,7 @@ def read_args():
 
 def main():
     flags = read_args()
-
+    print(flags)
     experiment = MNIST(flags)
 
     try:
