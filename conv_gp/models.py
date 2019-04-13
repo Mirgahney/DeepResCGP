@@ -332,17 +332,17 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
             
-            # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             shapes.append(H_X.shape)
             # print(conv_layer)
-            # layers.append(conv_layer)
+            layers.append(conv_layer)
             # print(layers)
             # print('conv_1 ', type(H_X))
             if i == 0:
                 for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
                     print('Build residual block ', str(j+1))
                     # print('shape befor residual ', H_X.shape)
-                    conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = 1, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+                    conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
                     shapes.append(H_X.shape)
                     # print(conv_layer)
                     for x in conv_layer:
