@@ -347,8 +347,6 @@ class ModelBuilder(object):
                     # print(conv_layer)
                     for x in conv_layer:
                         layers.append(x)
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
-            layers.append(conv_layer)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
