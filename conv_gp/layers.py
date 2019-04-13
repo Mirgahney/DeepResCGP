@@ -105,6 +105,8 @@ class ConvLayer(Layer):
         also compute entries outside the diagonal.
         """
         N = tf.shape(ND_X)[0]
+        print('shape  ',tf.shape(ND_X))
+        print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
         NHWC_X = tf.reshape(ND_X, [N, self.view.input_size[0], self.view.input_size[1], self.feature_maps_in])
         PNL_patches = self.view.extract_patches_PNL(NHWC_X)
 
