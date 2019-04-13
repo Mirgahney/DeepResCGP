@@ -67,10 +67,10 @@ class ModelBuilder(object):
         assert len(strides) == len(filter_sizes)
         assert len(feature_maps) == (len(Ms) - 1)
 
-        # conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
-        #         loaded_parameters)
-        conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
-                loaded_parameters = loaded_parameters)
+        conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
+                loaded_parameters)
+        # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        #         loaded_parameters = loaded_parameters)
         print('layers ', conv_layers)
         print('befor last layer ', H_X.shape)
         last_layer_parameters = self._last_layer_parameters(loaded_parameters)
