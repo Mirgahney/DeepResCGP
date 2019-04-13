@@ -332,10 +332,10 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
             
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+            # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
             shapes.append(H_X.shape)
             # print(conv_layer)
-            layers.append(conv_layer)
+            # layers.append(conv_layer)
             # print(layers)
             # print('conv_1 ', type(H_X))
             if i == 0:
@@ -347,6 +347,8 @@ class ModelBuilder(object):
                     # print(conv_layer)
                     for x in conv_layer:
                         layers.append(x)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params)
+            layers.append(conv_layer)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
