@@ -287,7 +287,7 @@ class ModelBuilder(object):
             # Residual
         res_layers = []
         # print(H_X.shape)
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, padding = 'same', layer_params) # 'conv_1'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_1'
         res_layers.append(conv_layer)
         # print('after conv layer ' ,H_X.shape)
         # H_X = self._bn(H_X, name='bn_1')
@@ -299,7 +299,7 @@ class ModelBuilder(object):
         # with tf.Session() as sess:
         #     H_X = sess.run(H_X)
 
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, padding = 'same', layer_params) # 'conv_2'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
         res_layers.append(conv_layer)
 
         # H_X = self._bn(H_X, name='bn_2')
