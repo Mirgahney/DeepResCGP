@@ -218,7 +218,7 @@ class ModelBuilder(object):
         if q_sqrt is None:
             # Start with low variance.
             conv_layer.q_sqrt = conv_layer.q_sqrt.value * 1e-5
-        H_X = H_X + NHWC_X
+        # H_X = H_X + NHWC_X
         return conv_layer, H_X
 
     def _last_layer(self, H_X, M, filter_size, stride, layer_params=None):
