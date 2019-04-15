@@ -299,8 +299,8 @@ class ModelBuilder(object):
         # with tf.Session() as sess:
         #     H_X = sess.run(H_X)
 
-        # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
-        # res_layers.append(conv_layer)
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
+        res_layers.append(conv_layer)
 
         # H_X = self._bn(H_X, name='bn_2')
 
@@ -349,8 +349,8 @@ class ModelBuilder(object):
                     conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
                     shapes.append(H_X.shape)
                     # print(conv_layer)
-                    for x in conv_layer:
-                        layers.append(x)
+                    # for x in conv_layer:
+                        # layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
