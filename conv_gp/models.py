@@ -275,11 +275,11 @@ class ModelBuilder(object):
         paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
 			# 'constant_values' is 0.
 			# rank of 't' is 2.
-        # H_X = tf.pad(H_X, paddings, "CONSTANT")
-        # # print('res after pad ', type(H_X))
-        # with tf.Session() as sess:
-        #     H_X = sess.run(H_X)
-        # print('res after pad-eval ', type(H_X))  
+        H_X = tf.pad(H_X, paddings, "CONSTANT")
+        # print('res after pad ', type(H_X))
+        with tf.Session() as sess:
+            H_X = sess.run(H_X)
+        print('res after pad-eval ', type(H_X))  
             # Residual
         res_layers = []
         # print(H_X.shape)
