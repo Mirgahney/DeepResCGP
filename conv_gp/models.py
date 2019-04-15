@@ -402,7 +402,9 @@ class ModelBuilder(object):
                 # print(conv_layer)
                 layers.append(conv_layer)
             else:
-                conv_layer, H_X = self._resconv_layer(H_X, M, feature_map, 1, 1, 'VALID', layer_params)
+                npad = ((0,0),(1,1),(1,1),(0,0))
+                H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
+                conv_layer, H_X = self._resconv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)
