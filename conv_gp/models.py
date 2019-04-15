@@ -300,7 +300,7 @@ class ModelBuilder(object):
 
         # H_X = self._bn(H_X, name='bn_2')
 
-        H_X = H_X + shortcut
+        # H_X = H_X + shortcut
             #H_X = self._relu(H_X, name='relu_2')
         return res_layers, H_X
 
