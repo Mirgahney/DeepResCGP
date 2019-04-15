@@ -107,7 +107,7 @@ class ConvLayer(Layer):
         N = tf.shape(ND_X)[0]
         print('shape  ',tf.shape(ND_X))
         print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
-        NHWC_X = tf.reshape(ND_X, [N, self.view.input_size[0], self.view.input_size[1], self.feature_maps_in])
+        NHWC_X = tf.reshape(ND_X, [N, self.view.input_size[0] - 2 , self.view.input_size[1] - 2, self.feature_maps_in])
         print('-------------Reshaped-----------------')
         PNL_patches = self.view.extract_patches_PNL(NHWC_X)
 
@@ -118,6 +118,9 @@ class ConvLayer(Layer):
             Knn = self.conv_kernel.Kff(PNL_patches)
         else:
             Knn = self.conv_kernel.Kdiag(PNL_patches)
+
+        print('MM_Kuu ', MM_Kuu.shape)
+        print('PMN_Kuf ', PMN_Kuf.shape)
 
         mean, var = conditional(PMN_Kuf, MM_Kuu, Knn, self.q_mu, full_cov=full_cov,
                 q_sqrt=self.q_sqrt, white=self.white)
