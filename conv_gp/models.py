@@ -30,8 +30,8 @@ def select_initial_inducing_points(X, M):
     kmeans.fit(X)
     return kmeans.cluster_centers_
 
-def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride):
-    conv = IdentityConv2dMean(filter_size, feature_maps_in, feature_maps_out, stride)
+def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride, padding):
+    conv = IdentityConv2dMean(filter_size, feature_maps_in, feature_maps_out, stride, padding)
     sess = conv.enquire_session()
     if type(NHWC_X.shape[0]) == tf.Dimension:
         batch = tf.dimension_value(NHWC_X.shape[0])
@@ -100,12 +100,12 @@ class ModelBuilder(object):
     #         layers.append(conv_layer)
     #     return layers, H_X
 
-    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'valid' ,layer_params=None):
+    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'VALID' ,layer_params=None):
         if layer_params is None:
             layer_params = {}
-        if padding == 'same':
-            npad = ((0,0),(1,1),(1,1),(0,0))
-            NHWC_X = np.pad(NHWC_X, pad_width=npad, mode='constant', constant_values=0)
+        # if padding == 'same':
+        #     npad = ((0,0),(1,1),(1,1),(0,0))
+        #     NHWC_X = np.pad(NHWC_X, pad_width=npad, mode='constant', constant_values=0)
 
         NHWC = NHWC_X.shape
         view = FullView(input_size=NHWC[1:3],
@@ -122,7 +122,7 @@ class ModelBuilder(object):
 
         output_shape = image_HW(view.patch_count) + [feature_map]
 
-        H_X = identity_conv(NHWC_X, filter_size, NHWC[3], feature_map, stride)
+        H_X = identity_conv(NHWC_X, filter_size, NHWC[3], feature_map, stride, padding)
         if len(layer_params) == 0:
             conv_features = PatchInducingFeatures.from_images(
                     NHWC_X,
@@ -287,7 +287,7 @@ class ModelBuilder(object):
             # Residual
         res_layers = []
         # print(H_X.shape)
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_1'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params) # 'conv_1'
         res_layers.append(conv_layer)
         # print('after conv layer ' ,H_X.shape)
         # H_X = self._bn(H_X, name='bn_1')
@@ -299,12 +299,12 @@ class ModelBuilder(object):
         # with tf.Session() as sess:
         #     H_X = sess.run(H_X)
 
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params) # 'conv_2'
         res_layers.append(conv_layer)
 
         # H_X = self._bn(H_X, name='bn_2')
 
-        # H_X = H_X + shortcut
+        H_X = H_X + shortcut
             #H_X = self._relu(H_X, name='relu_2')
         return res_layers, H_X
 

@@ -4,19 +4,20 @@ import tensorflow as tf
 from gpflow.decors import params_as_tensors
 
 class IdentityConv2dMean(gpflow.mean_functions.MeanFunction):
-    def __init__(self, filter_size, feature_maps_in, feature_maps_out=1, stride=1):
+    def __init__(self, filter_size, feature_maps_in, feature_maps_out=1, stride=1, padding = 'VALID'):
         super().__init__()
         self.filter_size = filter_size
         self.feature_maps_in = feature_maps_in
         self.feature_maps_out = feature_maps_out
         self.stride = stride
+        self.padding = padding
         self.conv_filter = gpflow.Param(self._init_filter())
 
     @params_as_tensors
     def __call__(self, NHWC_X):
         return tf.nn.conv2d(NHWC_X, self.conv_filter,
                 strides=[1, self.stride, self.stride, 1],
-                padding="VALID",
+                padding=self.padding,
                 data_format="NHWC")
 
     def _init_filter(self):
