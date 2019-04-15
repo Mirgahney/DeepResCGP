@@ -406,11 +406,15 @@ class ModelBuilder(object):
                 # H_X_pad = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
                 # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
                 # layers.append(pad_layer)
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
+                shortcut = H_X
+                conv_layer, H_X = self._conv_layer(shortcut, M, feature_map, 3, 1, 'VALID', layer_params)
+                layers.append(conv_layer)
+                
+                conv_layer, H_X = self._conv_layer(shortcut, M, feature_map, 3, 1, 'SAME', layer_params)
                 print('sam padding ', H_X.shape)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
-                layers.append(conv_layer)
+                
                 # H_X_pad = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
                 # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
                 # layers.append(pad_layer)
