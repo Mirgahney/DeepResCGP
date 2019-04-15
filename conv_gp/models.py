@@ -160,6 +160,67 @@ class ModelBuilder(object):
 
         return conv_layer, H_X
 
+    def _resconv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'SAME' ,layer_params=None):
+        if layer_params is None:
+            layer_params = {}
+        # if padding == 'same':
+        #     npad = ((0,0),(1,1),(1,1),(0,0))
+        #     NHWC_X = np.pad(NHWC_X, pad_width=npad, mode='constant', constant_values=0)
+
+        NHWC = NHWC_X.shape
+        # shortcut = NHWC_X
+        view = FullView(input_size=NHWC[1:3],
+                filter_size=filter_size,
+                feature_maps=NHWC[3],
+                stride=stride)
+
+        if self.flags.identity_mean:
+            conv_mean = Conv2dMean(filter_size, NHWC[3], feature_map,
+                    stride=stride)
+        else:
+            conv_mean = gpflow.mean_functions.Zero()
+        conv_mean.set_trainable(False)
+
+        output_shape = image_HW(view.patch_count) + [feature_map]
+
+        H_X = identity_conv(NHWC_X, filter_size, NHWC[3], feature_map, stride, padding)
+        if len(layer_params) == 0:
+            conv_features = PatchInducingFeatures.from_images(
+                    NHWC_X,
+                    M,
+                    filter_size)
+        else:
+            conv_features = PatchInducingFeatures(layer_params.get('Z'))
+
+        patch_length = filter_size ** 2 * NHWC[3]
+        if self.flags.base_kernel == 'rbf':
+            lengthscales = layer_params.get('base_kernel/lengthscales', 5.0)
+            variance = layer_params.get('base_kernel/variance', 5.0)
+            base_kernel = kernels.RBF(patch_length, variance=variance, lengthscales=lengthscales)
+        elif self.flags.base_kernel == 'acos':
+            base_kernel = kernels.ArcCosine(patch_length, order=0)
+        else:
+            raise ValueError("Not a valid base-kernel value")
+
+        q_mu = layer_params.get('q_mu')
+        q_sqrt = layer_params.get('q_sqrt')
+
+        conv_layer = ConvLayer(
+            base_kernel=base_kernel,
+            mean_function=conv_mean,
+            feature=conv_features,
+            view=view,
+            white=self.flags.white,
+            gp_count=feature_map,
+            q_mu=q_mu,
+            q_sqrt=q_sqrt)
+
+        if q_sqrt is None:
+            # Start with low variance.
+            conv_layer.q_sqrt = conv_layer.q_sqrt.value * 1e-5
+        H_X = H_X + NHWC_X
+        return conv_layer, H_X
+
     def _last_layer(self, H_X, M, filter_size, stride, layer_params=None):
         if layer_params is None:
             layer_params = {}
@@ -340,17 +401,21 @@ class ModelBuilder(object):
             shapes.append(H_X.shape)
             # print(conv_layer)
             layers.append(conv_layer)
+            conv_layer, H_X = self._resconv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params)
+            shapes.append(H_X.shape)
+            # print(conv_layer)
+            layers.append(conv_layer)
             # print(layers)
             # print('conv_1 ', type(H_X))
-            if i == 0:
-                for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
-                    print('Build residual block ', str(j+1))
-                    # print('shape befor residual ', H_X.shape)
-                    conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
-                    shapes.append(H_X.shape)
-                    # print(conv_layer)
-                    for x in conv_layer:
-                        layers.append(x)
+            # if i == 0:
+            #     for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
+            #         print('Build residual block ', str(j+1))
+            #         # print('shape befor residual ', H_X.shape)
+            #         conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+            #         shapes.append(H_X.shape)
+            #         # print(conv_layer)
+            #         for x in conv_layer:
+            #             layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
