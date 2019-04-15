@@ -299,8 +299,8 @@ class ModelBuilder(object):
         # with tf.Session() as sess:
         #     H_X = sess.run(H_X)
 
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
-        res_layers.append(conv_layer)
+        # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'same', layer_params) # 'conv_2'
+        # res_layers.append(conv_layer)
 
         # H_X = self._bn(H_X, name='bn_2')
 
