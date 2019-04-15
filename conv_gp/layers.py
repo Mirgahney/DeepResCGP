@@ -125,13 +125,19 @@ class ConvLayer(Layer):
         if full_cov:
             # var: R x P x N x N
             var = tf.transpose(var, [2, 3, 1, 0])
+            print('var reshape full ', var.shape, ' N ', N, ' N ', N, ' num_outputs', self.num_outputs)
             var = tf.reshape(var, [N, N, self.num_outputs])
+            print('-------------Var Reshaped-----------------')
         else:
             # var: R x P x N
             var = tf.transpose(var, [2, 1, 0])
+            print('var reshape not-full ', var.shape, ' N ', N, ' num_outputs', self.num_outputs)
             var = tf.reshape(var, [N, self.num_outputs])
+            print('-------------Var Reshaped-----------------')
 
+        print('mean reshape not-full ', mean.shape, ' N ', N, ' num_outputs', self.num_outputs)
         mean = tf.reshape(mean, [N, self.num_outputs])
+        print('-------------Mean Reshaped-----------------')
 
         mean_view = self.view.mean_view(NHWC_X, PNL_patches)
         mean = mean + self.mean_function(mean_view)
