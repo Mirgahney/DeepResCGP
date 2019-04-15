@@ -111,8 +111,8 @@ class ConvLayer(Layer):
         print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
         
         if self.padding == 'SAME':
-            W = self.view.input_size[0] - 2
-            H = self.view.input_size[1] - 2
+            W = self.view.input_size[0]
+            H = self.view.input_size[1] 
         else:
             W = self.view.input_size[0] 
             H = self.view.input_size[1]
