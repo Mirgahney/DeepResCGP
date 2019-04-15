@@ -401,7 +401,7 @@ class ModelBuilder(object):
             shapes.append(H_X.shape)
             # print(conv_layer)
             layers.append(conv_layer)
-            conv_layer, H_X = self._resconv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params)
+            conv_layer, H_X = self._resconv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
             shapes.append(H_X.shape)
             # print(conv_layer)
             layers.append(conv_layer)
