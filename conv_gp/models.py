@@ -410,7 +410,7 @@ class ModelBuilder(object):
                 conv_layer, H_X = self._conv_layer(shortcut, M, feature_map, 3, 1, 'VALID', layer_params)
                 layers.append(conv_layer)
                 
-                conv_layer, H_X = self._conv_layer(shortcut, M, feature_map, 3, 1, 'SAME', layer_params)
+                conv_layer, H_X = self._conv_layer(shortcut, M, feature_map, 3, 1, 'VALID', layer_params)
                 print('sam padding ', H_X.shape)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
