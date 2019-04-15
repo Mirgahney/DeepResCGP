@@ -30,7 +30,7 @@ def select_initial_inducing_points(X, M):
     kmeans.fit(X)
     return kmeans.cluster_centers_
 
-def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride, padding):
+def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride, padding = 'VALID'):
     conv = IdentityConv2dMean(filter_size, feature_maps_in, feature_maps_out, stride, padding)
     sess = conv.enquire_session()
     if type(NHWC_X.shape[0]) == tf.Dimension:
