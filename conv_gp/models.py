@@ -405,7 +405,7 @@ class ModelBuilder(object):
                 layers.append(conv_layer)
             else:
                 npad = ((0,0),(1,1),(1,1),(0,0))
-                H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
+                # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
                 # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
                 # layers.append(pad_layer)
                 shortcut = H_X
