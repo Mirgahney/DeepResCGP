@@ -402,7 +402,7 @@ class ModelBuilder(object):
                 # print(conv_layer)
                 layers.append(conv_layer)
             else:
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 1, 1, 'VALID', layer_params)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)
