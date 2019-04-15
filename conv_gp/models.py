@@ -100,9 +100,13 @@ class ModelBuilder(object):
     #         layers.append(conv_layer)
     #     return layers, H_X
 
-    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, layer_params=None):
+    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'valid' ,layer_params=None):
         if layer_params is None:
             layer_params = {}
+        if padding == 'same':
+            npad = ((0,0),(1,1),(1,1),(0,0))
+            NHWC_X = np.pad(NHWC_X, pad_width=npad, mode='constant', constant_values=0)
+
         NHWC = NHWC_X.shape
         view = FullView(input_size=NHWC[1:3],
                 filter_size=filter_size,
@@ -272,18 +276,18 @@ class ModelBuilder(object):
         shortcut = H_X
         # print(H_X.shape)
             # pading to get the same input dimensionality 
-        paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
-			# 'constant_values' is 0.
-			# rank of 't' is 2.
-        H_X = tf.pad(H_X, paddings, "CONSTANT")
-        # print('res after pad ', type(H_X))
-        with tf.Session() as sess:
-            H_X = sess.run(H_X)
-        print('res after pad-eval ', type(H_X))  
+   #      paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
+			# # 'constant_values' is 0.
+			# # rank of 't' is 2.
+   #      H_X = tf.pad(H_X, paddings, "CONSTANT")
+   #      # print('res after pad ', type(H_X))
+   #      with tf.Session() as sess:
+   #          H_X = sess.run(H_X)
+   #      print('res after pad-eval ', type(H_X))  
             # Residual
         res_layers = []
         # print(H_X.shape)
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_1'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, padding = 'same', layer_params) # 'conv_1'
         res_layers.append(conv_layer)
         # print('after conv layer ' ,H_X.shape)
         # H_X = self._bn(H_X, name='bn_1')
@@ -295,7 +299,7 @@ class ModelBuilder(object):
         # with tf.Session() as sess:
         #     H_X = sess.run(H_X)
 
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, layer_params) # 'conv_2'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, padding = 'same', layer_params) # 'conv_2'
         res_layers.append(conv_layer)
 
         # H_X = self._bn(H_X, name='bn_2')
