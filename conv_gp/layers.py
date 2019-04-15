@@ -55,6 +55,7 @@ class ConvLayer(Layer):
             gp_count=1,
             q_mu=None,
             q_sqrt=None,
+            padding = 'SAME',
             **kwargs):
         super().__init__(**kwargs)
         self.base_kernel = base_kernel
@@ -80,6 +81,7 @@ class ConvLayer(Layer):
         if q_mu is None:
             q_mu = self._initial_q_mu()
         self.q_mu = gpflow.Param(q_mu)
+        self.padding = padding
 
         #TODO figure out if we need whitened vs non-whitened GP.
         if q_sqrt is None:
@@ -107,7 +109,15 @@ class ConvLayer(Layer):
         N = tf.shape(ND_X)[0]
         print('shape  ',tf.shape(ND_X))
         print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
-        NHWC_X = tf.reshape(ND_X, [N, self.view.input_size[0] - 2 , self.view.input_size[1] - 2, self.feature_maps_in])
+        
+        if self.padding == 'SAME':
+            W = self.view.input_size[0] - 2 
+            H = self.view.input_size[1] - 2
+        else:
+            W = self.view.input_size[0] 
+            H = self.view.input_size[1]
+
+        NHWC_X = tf.reshape(ND_X, [N, W, H, self.feature_maps_in])
         print('-------------Reshaped-----------------')
         PNL_patches = self.view.extract_patches_PNL(NHWC_X)
 

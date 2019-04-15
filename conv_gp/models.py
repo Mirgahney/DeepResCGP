@@ -152,7 +152,8 @@ class ModelBuilder(object):
             white=self.flags.white,
             gp_count=feature_map,
             q_mu=q_mu,
-            q_sqrt=q_sqrt)
+            q_sqrt=q_sqrt,
+            padding=padding)
 
         if q_sqrt is None:
             # Start with low variance.
@@ -213,7 +214,8 @@ class ModelBuilder(object):
             white=self.flags.white,
             gp_count=feature_map,
             q_mu=q_mu,
-            q_sqrt=q_sqrt)
+            q_sqrt=q_sqrt,
+            padding=padding)
 
         if q_sqrt is None:
             # Start with low variance.
