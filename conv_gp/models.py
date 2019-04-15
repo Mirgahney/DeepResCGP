@@ -396,15 +396,16 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params)
-            shapes.append(H_X.shape)
-            # print(conv_layer)
-            layers.append(conv_layer)
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
-            shapes.append(H_X.shape)
-            # print(conv_layer)
-            layers.append(conv_layer)
+            if i % 2 == 0:
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params)
+                shapes.append(H_X.shape)
+                # print(conv_layer)
+                layers.append(conv_layer)
+            else:
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params)
+                shapes.append(H_X.shape)
+                # print(conv_layer)
+                layers.append(conv_layer)
             # print(layers)
             # print('conv_1 ', type(H_X))
             # if i == 0:
