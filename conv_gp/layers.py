@@ -55,7 +55,7 @@ class ConvLayer(Layer):
             gp_count=1,
             q_mu=None,
             q_sqrt=None,
-            padding = 'SAME',
+            padding = True,
             **kwargs):
         super().__init__(**kwargs)
         self.base_kernel = base_kernel
