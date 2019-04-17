@@ -439,8 +439,6 @@ class ModelBuilder(object):
             # print(layers)
         print(shapes)
         print(len(feature_maps))
-        npad = ((0,0),(1,1),(1,1),(0,0))
-        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
         return layers, H_X
 
     def _bn(self, x, name="bn"):
