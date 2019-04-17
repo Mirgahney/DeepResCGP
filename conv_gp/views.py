@@ -19,15 +19,13 @@ class FullView(View):
     """The full view uses all patches of the image."""
     def __init__(self, input_size, filter_size, feature_maps, stride=1, pad = 0):
         super().__init__()
-        self.input_size = list(input_size)
+        self.input_size = [x-2*pad for x in list(input_size)]
         self.stride = stride
+        self.pad = pad
         self.dilation = 1
         self.filter_size = filter_size
         self.feature_maps = feature_maps
         self.patch_shape = [filter_size, filter_size]
-        self.pad = pad
-        self.input_size[0] -= 2*self.pad
-        self.input_size[1] -= 2*self.pad
         self.patch_count = self._patch_count()
         self.patch_length = self._patch_length()
         self.out_image_height, self.out_image_width = self._out_image_size()
