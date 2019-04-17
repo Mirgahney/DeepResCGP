@@ -25,12 +25,12 @@ class FullView(View):
         self.filter_size = filter_size
         self.feature_maps = feature_maps
         self.patch_shape = [filter_size, filter_size]
-        self.patch_count = self._patch_count()
-        self.patch_length = self._patch_length()
-        self.out_image_height, self.out_image_width = self._out_image_size()
         self.pad = pad
         self.input_size[0] -= 2*self.pad
         self.input_size[1] -= 2*self.pad
+        self.patch_count = self._patch_count()
+        self.patch_length = self._patch_length()
+        self.out_image_height, self.out_image_width = self._out_image_size()
 
     def _extract_image_patches(self, NHWC_X):
         # returns: N x H x W x C * P
