@@ -55,7 +55,7 @@ class ConvLayer(Layer):
             gp_count=1,
             q_mu=None,
             q_sqrt=None,
-            padding = True,
+            padding = 'SAME',
             **kwargs):
         super().__init__(**kwargs)
         self.base_kernel = base_kernel
@@ -110,24 +110,21 @@ class ConvLayer(Layer):
         print('shape  ',tf.shape(ND_X))
         print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
         
-        if self.padding: #== 'SAME':
-            W = self.view.input_size[0] - 2
-            H = self.view.input_size[1] - 2
-            print('padding ', self.padding)
-        else:
-            W = self.view.input_size[0] 
-            H = self.view.input_size[1]
-            print('padding ', self.padding)
-
-        print('tf.shape(ND_X)[1]', tf.shape(ND_X)[1])
-
-        # if tf.shape(ND_X)[1] != self.view.input_size[0]*self.view.input_size[1]*self.feature_maps_in:
-        #     # all_featuers = tf.shape(ND_X)[1]/self.feature_maps_in
-        #     W = self.view.input_size[0] - 2
-        #     H = self.view.input_size[1] - 2
+        # if self.padding == 'SAME':
+        #     W = self.view.input_size[0]
+        #     H = self.view.input_size[1] 
         # else:
         #     W = self.view.input_size[0] 
         #     H = self.view.input_size[1]
+
+        print('tf.shape(ND_X)[1]', tf.shape(ND_X)[1])
+
+        if self.view.input_size[0] in [11,12]:
+            W = self.view.input_size[0] - 2
+            H = self.view.input_size[1] - 2
+        else:
+            W = self.view.input_size[0] 
+            H = self.view.input_size[1]
 
         NHWC_X = tf.reshape(ND_X, [N, W, H, self.feature_maps_in])
         print('-------------Reshaped-----------------')

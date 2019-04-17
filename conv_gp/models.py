@@ -30,7 +30,7 @@ def select_initial_inducing_points(X, M):
     kmeans.fit(X)
     return kmeans.cluster_centers_
 
-def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride, padding = False):
+def identity_conv(NHWC_X, filter_size, feature_maps_in, feature_maps_out, stride, padding = 'VALID'):
     conv = IdentityConv2dMean(filter_size, feature_maps_in, feature_maps_out, stride, padding)
     sess = conv.enquire_session()
     if type(NHWC_X.shape[0]) == tf.Dimension:
@@ -100,7 +100,7 @@ class ModelBuilder(object):
     #         layers.append(conv_layer)
     #     return layers, H_X
 
-    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = False ,layer_params=None):
+    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'VALID' ,layer_params=None):
         if layer_params is None:
             layer_params = {}
         # if padding == 'same':
@@ -161,7 +161,7 @@ class ModelBuilder(object):
 
         return conv_layer, H_X
 
-    def _resconv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = True ,layer_params=None):
+    def _resconv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'SAME' ,layer_params=None):
         if layer_params is None:
             layer_params = {}
         # if padding == 'same':
@@ -399,7 +399,7 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
             if i % 2 == 0:
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, False, layer_params)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)
@@ -410,7 +410,7 @@ class ModelBuilder(object):
                 # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
                 # layers.append(pad_layer)
                 
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, True, layer_params)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)
