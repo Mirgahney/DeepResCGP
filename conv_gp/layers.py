@@ -113,9 +113,11 @@ class ConvLayer(Layer):
         if self.padding: #== 'SAME':
             W = self.view.input_size[0] - 2
             H = self.view.input_size[1] - 2
+            print('padding ', self.padding)
         else:
             W = self.view.input_size[0] 
             H = self.view.input_size[1]
+            print('padding ', self.padding)
 
         print('tf.shape(ND_X)[1]', tf.shape(ND_X)[1])
 
