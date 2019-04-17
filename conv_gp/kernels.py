@@ -29,6 +29,8 @@ class AdditivePatchKernel(gpflow.kernels.Kernel):
 
     def _reshape_X(self, ND_X):
         ND = tf.shape(ND_X)
+        print('kernel ND_X ', ND_X.shape)
+        print('kernel list(self.view.input_size) ', list(self.view.input_size))
         return tf.reshape(ND_X, [ND[0]] + list(self.view.input_size))
 
     def K(self, ND_X, X2=None):
