@@ -100,7 +100,7 @@ class ModelBuilder(object):
     #         layers.append(conv_layer)
     #     return layers, H_X
 
-    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'VALID' ,layer_params=None):
+    def _conv_layer(self, NHWC_X, M, feature_map, filter_size, stride, padding = 'VALID' ,layer_params=None, pad = 0):
         if layer_params is None:
             layer_params = {}
         # if padding == 'same':
@@ -111,7 +111,8 @@ class ModelBuilder(object):
         view = FullView(input_size=NHWC[1:3],
                 filter_size=filter_size,
                 feature_maps=NHWC[3],
-                stride=stride)
+                stride=stride,
+                pad = pad)
 
         if self.flags.identity_mean:
             conv_mean = Conv2dMean(filter_size, NHWC[3], feature_map,
@@ -223,7 +224,7 @@ class ModelBuilder(object):
         H_X = H_X + NHWC_X
         return conv_layer, H_X
 
-    def _last_layer(self, H_X, M, filter_size, stride, layer_params=None):
+    def _last_layer(self, H_X, M, filter_size, stride, layer_params=None, pad = 0):
         if layer_params is None:
             layer_params = {}
 
@@ -257,7 +258,8 @@ class ModelBuilder(object):
             view = FullView(input_size=NHWC[1:],
                     filter_size=filter_size,
                     feature_maps=NHWC[3],
-                    stride=stride)
+                    stride=stride,
+                    pad = pad)
             if Z is None:
                 inducing = PatchInducingFeatures.from_images(H_X, M, filter_size)
             else:
@@ -399,7 +401,7 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
             if i % 2 == 0:
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)
@@ -410,7 +412,7 @@ class ModelBuilder(object):
                 # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
                 # layers.append(pad_layer)
                 
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1)
                 shapes.append(H_X.shape)
                 # print(conv_layer)
                 layers.append(conv_layer)

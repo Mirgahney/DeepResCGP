@@ -17,9 +17,11 @@ class View(Parameterized):
 
 class FullView(View):
     """The full view uses all patches of the image."""
-    def __init__(self, input_size, filter_size, feature_maps, stride=1):
+    def __init__(self, input_size, filter_size, feature_maps, stride=1, pad = 0):
         super().__init__()
         self.input_size = list(input_size)
+        self.input_size[0] -= 2*pad
+        self.input_size[1] -= 2*pad
         self.stride = stride
         self.dilation = 1
         self.filter_size = filter_size
@@ -63,8 +65,8 @@ class FullView(View):
         return height * width
 
     def _out_image_size(self):
-        height = (self.input_size[0] - self.patch_shape[0]) // self.stride + 1
-        width = (self.input_size[1] - self.patch_shape[1]) // self.stride + 1
+        height = (self.input_size[0] - self.patch_shape[0] + 2*pad) // self.stride + 1
+        width = (self.input_size[1] - self.patch_shape[1] + 2*pad) // self.stride + 1
         return height, width
 
 class RandomPartialView(View):
