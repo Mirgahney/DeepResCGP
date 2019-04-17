@@ -34,11 +34,12 @@ class FullView(View):
 
     def _extract_image_patches(self, NHWC_X):
         # returns: N x H x W x C * P
+        padd = 'SAME' if self.pad != 0 else 'VALID' 
         return tf.extract_image_patches(NHWC_X,
                 [1, self.filter_size, self.filter_size, 1],
                 [1, self.stride, self.stride, 1],
                 [1, self.dilation, self.dilation, 1],
-                "VALID")
+                padd)
 
     def extract_patches_PNL(self, NHWC_X):
         N = tf.shape(NHWC_X)[0]
