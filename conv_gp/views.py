@@ -20,8 +20,6 @@ class FullView(View):
     def __init__(self, input_size, filter_size, feature_maps, stride=1, pad = 0):
         super().__init__()
         self.input_size = list(input_size)
-        self.input_size[0] -= 2*pad
-        self.input_size[1] -= 2*pad
         self.stride = stride
         self.dilation = 1
         self.filter_size = filter_size
@@ -30,6 +28,9 @@ class FullView(View):
         self.patch_count = self._patch_count()
         self.patch_length = self._patch_length()
         self.out_image_height, self.out_image_width = self._out_image_size()
+        self.pad = pad
+        self.input_size[0] -= 2*self.pad
+        self.input_size[1] -= 2*self.pad
 
     def _extract_image_patches(self, NHWC_X):
         # returns: N x H x W x C * P
@@ -65,8 +66,8 @@ class FullView(View):
         return height * width
 
     def _out_image_size(self):
-        height = (self.input_size[0] - self.patch_shape[0] + 2*pad) // self.stride + 1
-        width = (self.input_size[1] - self.patch_shape[1] + 2*pad) // self.stride + 1
+        height = (self.input_size[0] - self.patch_shape[0] + 2*self.pad) // self.stride + 1
+        width = (self.input_size[1] - self.patch_shape[1] + 2*self.pad) // self.stride + 1
         return height, width
 
 class RandomPartialView(View):
