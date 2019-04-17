@@ -119,7 +119,7 @@ class ConvLayer(Layer):
 
         print('tf.shape(ND_X)[1]', tf.shape(ND_X)[1])
 
-        if self.view.input_size[0] in [11,12]:
+        if self.view.input_size[0] == 14:
             W = self.view.input_size[0] - 2
             H = self.view.input_size[1] - 2
         else:
