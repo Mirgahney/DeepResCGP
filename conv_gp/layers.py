@@ -119,8 +119,8 @@ class ConvLayer(Layer):
 
         print('tf.shape(ND_X)[1]', tf.shape(ND_X)[1])
 
-        if tf.shape(ND_X)[1] != self.view.input_size[0]*self.view.input_size[1]*self.view.input_size[2]:
-            all_featuers = tf.shape(ND_X)[1]/self.view.input_size[2]
+        if tf.shape(ND_X)[1] != self.view.input_size[0]*self.view.input_size[1]*self.feature_maps_in:
+            all_featuers = tf.shape(ND_X)[1]/self.feature_maps_in
             W = np.sqrt(all_featuers) #self.view.input_size[0] - 2
             H = np.sqrt(all_featuers) #self.view.input_size[1] - 2
         else:
