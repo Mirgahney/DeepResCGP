@@ -337,40 +337,27 @@ class ModelBuilder(object):
         # num_channel = H_X.get_shape().as_list()[-1]
         # with tf.variable_scope(name) as scope:
         print('\tBuilding residual unit: %s' % name)
-            # Shortcut connection
+        # Shortcut connection
         shortcut = H_X
-        # print(H_X.shape)
-            # pading to get the same input dimensionality 
-   #      paddings = tf.constant([[0, 0],[1, 1,], [1, 1],[0, 0]])
-			# # 'constant_values' is 0.
-			# # rank of 't' is 2.
-   #      H_X = tf.pad(H_X, paddings, "CONSTANT")
-   #      # print('res after pad ', type(H_X))
-   #      with tf.Session() as sess:
-   #          H_X = sess.run(H_X)
-   #      print('res after pad-eval ', type(H_X))  
-            # Residual
+        # padding 
+        npad = ((0,0),(1,1),(1,1),(0,0))
+        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1) 
+        
+        # Residual
         res_layers = []
-        # print(H_X.shape)
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params) # 'conv_1'
+
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_1'
         res_layers.append(conv_layer)
-        # print('after conv layer ' ,H_X.shape)
-        # H_X = self._bn(H_X, name='bn_1')
+        # H_X = self._bn(H_X, name='bn_2')
 
-            #H_X = self._relu(H_X, name='relu_1')
+        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1) 
 
-            # pading to get the same input dimensionality 
-        # H_X = tf.pad(H_X, paddings, "CONSTANT")
-        # with tf.Session() as sess:
-        #     H_X = sess.run(H_X)
-
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'SAME', layer_params) # 'conv_2'
+        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_2'
         res_layers.append(conv_layer)
-
         # H_X = self._bn(H_X, name='bn_2')
 
         H_X = H_X + shortcut
-            #H_X = self._relu(H_X, name='relu_2')
+
         return res_layers, H_X
 
     def _conv_layers(self, Ms, feature_maps, strides, filter_sizes, loaded_parameters={}):
@@ -400,41 +387,19 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            if i % 2 == 0:
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
-                shapes.append(H_X.shape)
+            
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
+            shapes.append(H_X.shape)
                 # print(conv_layer)
-                layers.append(conv_layer)
-            else:
-                shortcut = H_X
-                npad = ((0,0),(1,1),(1,1),(0,0))
-                H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1)
-                # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
-                # layers.append(pad_layer)
-                
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1)
-                shapes.append(H_X.shape)
-                # print(conv_layer)
-                layers.append(conv_layer)
-                # H_X_pad = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
-                # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
-                # layers.append(pad_layer)
-                # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
-                H_X += shortcut
-                # shapes.append(H_X.shape)
-                # print(conv_layer)
-                # layers.append(conv_layer)
-            # print(layers)
-            # print('conv_1 ', type(H_X))
-            # if i == 0:
-            #     for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
-            #         print('Build residual block ', str(j+1))
-            #         # print('shape befor residual ', H_X.shape)
-            #         conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
-            #         shapes.append(H_X.shape)
-            #         # print(conv_layer)
-            #         for x in conv_layer:
-            #             layers.append(x)
+            layers.append(conv_layer)
+
+            # print('Build residual block ', str(j+1))
+            # print('shape befor residual ', H_X.shape)
+            conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+            shapes.append(H_X.shape)
+            # print(conv_layer)
+            for x in conv_layer:
+                layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         print(shapes)
@@ -455,3 +420,54 @@ class ModelBuilder(object):
         # scope_name = tf.get_variable_scope().name + "/" + name
         # self._add_flops_weights(scope_name, f, 0)
         return x
+
+    # def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
+    #     H_X = self.X_train
+    #     layers = []
+    #     shapes = []
+    #     for i in range(len(feature_maps)):
+    #         M = Ms[i]
+    #         feature_map = feature_maps[i]
+    #         filter_size = filter_sizes[i]
+    #         stride = strides[i]
+    #         layer_params = loaded_parameters.get(i)
+    #         if i % 2 == 0:
+    #             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
+    #             shapes.append(H_X.shape)
+    #             # print(conv_layer)
+    #             layers.append(conv_layer)
+    #         else:
+    #             shortcut = H_X
+    #             npad = ((0,0),(1,1),(1,1),(0,0))
+    #             H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1)
+    #             # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
+    #             # layers.append(pad_layer)
+                
+    #             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1)
+    #             shapes.append(H_X.shape)
+    #             # print(conv_layer)
+    #             layers.append(conv_layer)
+    #             # H_X_pad = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0)
+    #             # pad_layer = lambda x: np.pad(x, pad_width=npad, mode='constant', constant_values=0)
+    #             # layers.append(pad_layer)
+    #             # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'SAME', layer_params)
+    #             H_X += shortcut
+    #             # shapes.append(H_X.shape)
+    #             # print(conv_layer)
+    #             # layers.append(conv_layer)
+    #         # print(layers)
+    #         # print('conv_1 ', type(H_X))
+    #         # if i == 0:
+    #         #     for j in range(res_blocks): #H_X, M, feature_map, filter_size , stride , layer_params, name = 'unit'
+    #         #         print('Build residual block ', str(j+1))
+    #         #         # print('shape befor residual ', H_X.shape)
+    #         #         conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+    #         #         shapes.append(H_X.shape)
+    #         #         # print(conv_layer)
+    #         #         for x in conv_layer:
+    #         #             layers.append(x)
+    #         # print('shape after residual ',H_X.shape)
+    #         # print(layers)
+    #     print(shapes)
+    #     print(len(feature_maps))
+    #     return layers, H_X
