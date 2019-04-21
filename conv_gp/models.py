@@ -348,13 +348,13 @@ class ModelBuilder(object):
 
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_1'
         res_layers.append(conv_layer)
-        # H_X = self._bn(H_X, name='bn_2')
+        H_X = self._bn(H_X, name='bn_2')
 
         H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1) 
 
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_2'
         res_layers.append(conv_layer)
-        # H_X = self._bn(H_X, name='bn_2')
+        H_X = self._bn(H_X, name='bn_2')
 
         H_X = H_X + shortcut
 
@@ -403,8 +403,8 @@ class ModelBuilder(object):
                     layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
-        print(shapes)
-        print(len(feature_maps))
+        # print(shapes)
+        # print(len(feature_maps))
         return layers, H_X
 
     def _bn(self, x, name="bn"):
