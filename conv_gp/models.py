@@ -341,7 +341,7 @@ class ModelBuilder(object):
         shortcut = H_X
         # padding 
         npad = ((0,0),(1,1),(1,1),(0,0))
-        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1) 
+        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
         
         # Residual
         res_layers = []
@@ -350,7 +350,7 @@ class ModelBuilder(object):
         res_layers.append(conv_layer)
         # H_X = self._bn(H_X, name='bn_2')
 
-        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=1) 
+        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
         conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_2'
         res_layers.append(conv_layer)
