@@ -107,8 +107,8 @@ class ConvLayer(Layer):
         also compute entries outside the diagonal.
         """
         N = tf.shape(ND_X)[0]
-        print('shape  ',tf.shape(ND_X))
-        print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
+        # print('shape  ',tf.shape(ND_X))
+        # print('N ', N,' input_size: ', self.view.input_size[0], ' ', self.view.input_size[1], ' feature_maps_in: ',self.feature_maps_in)
         
         # if self.padding == 'SAME':
         #     W = self.view.input_size[0]
@@ -136,8 +136,8 @@ class ConvLayer(Layer):
         H = self.view.input_size[1]
 
         NHWC_X = tf.reshape(ND_X, [N, W, H, self.feature_maps_in])
-        print('-------------Reshaped-----------------')
-        print('-------------NHWC_X  ', NHWC_X.shape)
+        # print('-------------Reshaped-----------------')
+        # print('-------------NHWC_X  ', NHWC_X.shape)
         PNL_patches = self.view.extract_patches_PNL(NHWC_X)
 
         MM_Kuu = self.conv_kernel.Kuu(self.feature.Z)
@@ -148,8 +148,8 @@ class ConvLayer(Layer):
         else:
             Knn = self.conv_kernel.Kdiag(PNL_patches)
 
-        print('MM_Kuu ', MM_Kuu.shape)
-        print('PMN_Kuf ', PMN_Kuf.shape)
+        # print('MM_Kuu ', MM_Kuu.shape)
+        # print('PMN_Kuf ', PMN_Kuf.shape)
 
         mean, var = conditional(PMN_Kuf, MM_Kuu, Knn, self.q_mu, full_cov=full_cov,
                 q_sqrt=self.q_sqrt, white=self.white)
@@ -157,19 +157,19 @@ class ConvLayer(Layer):
         if full_cov:
             # var: R x P x N x N
             var = tf.transpose(var, [2, 3, 1, 0])
-            print('var reshape full ', var.shape, ' N ', N, ' N ', N, ' num_outputs', self.num_outputs)
+            # print('var reshape full ', var.shape, ' N ', N, ' N ', N, ' num_outputs', self.num_outputs)
             var = tf.reshape(var, [N, N, self.num_outputs])
-            print('-------------Var Reshaped-----------------')
+            # print('-------------Var Reshaped-----------------')
         else:
             # var: R x P x N
             var = tf.transpose(var, [2, 1, 0])
-            print('var reshape not-full ', var.shape, ' N ', N, ' num_outputs', self.num_outputs)
+            # print('var reshape not-full ', var.shape, ' N ', N, ' num_outputs', self.num_outputs)
             var = tf.reshape(var, [N, self.num_outputs])
-            print('-------------Var Reshaped-----------------')
+            # print('-------------Var Reshaped-----------------')
 
-        print('mean reshape not-full ', mean.shape, ' N ', N, ' num_outputs', self.num_outputs)
+        # print('mean reshape not-full ', mean.shape, ' N ', N, ' num_outputs', self.num_outputs)
         mean = tf.reshape(mean, [N, self.num_outputs])
-        print('-------------Mean Reshaped-----------------')
+        # print('-------------Mean Reshaped-----------------')
 
         mean_view = self.view.mean_view(NHWC_X, PNL_patches)
         mean = mean + self.mean_function(mean_view)
