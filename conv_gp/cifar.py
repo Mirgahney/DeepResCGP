@@ -47,7 +47,7 @@ def read_args():
 
 def main():
     flags = read_args()
-
+    print(flags)
     experiment = Cifar(flags)
     try:
         for i in range(train_steps(flags)):
