@@ -186,13 +186,13 @@ def _bn(x, is_train = True, global_step=None, name='bn'):
         x = tf.convert_to_tensor(x)
         batch_mean, batch_var = tf.nn.moments(x, [0, 1, 2])
         with tf.device('/CPU:0'):
-            mu = tf.get_variable('mu', batch_mean.get_shape(), tf.float32,
+            mu = tf.get_variable('mu', batch_mean.get_shape(), tf.float64,
                             initializer=tf.zeros_initializer(), trainable=False)
-            sigma = tf.get_variable('sigma', batch_var.get_shape(), tf.float32,
+            sigma = tf.get_variable('sigma', batch_var.get_shape(), tf.float64,
                             initializer=tf.ones_initializer(), trainable=False)
-            beta = tf.get_variable('beta', batch_mean.get_shape(), tf.float32,
+            beta = tf.get_variable('beta', batch_mean.get_shape(), tf.float64,
                             initializer=tf.zeros_initializer())
-            gamma = tf.get_variable('gamma', batch_var.get_shape(), tf.float32,
+            gamma = tf.get_variable('gamma', batch_var.get_shape(), tf.float64,
                             initializer=tf.ones_initializer())
         # BN when training
         update = 1.0 - decay
@@ -215,5 +215,8 @@ def _bn(x, is_train = True, global_step=None, name='bn'):
                                           # trainable=True)
     return bn
 
-
 ## Other helper functions
+def inter_pad_4d(x, by = 1):
+    rown, cols = x.shape[1:3]
+    
+    return np.insert(np.insert(x,by*list(range(1,cols)),0, axis=2), by*list(range(1,rown)),0, axis=1)
