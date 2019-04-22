@@ -396,11 +396,11 @@ class ModelBuilder(object):
             for j in range(res_blocks):
                 print('Build residual block ', str(j+1))
                 # print('shape befor residual ', H_X.shape)
-                conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
-                shapes.append(H_X.shape)
+                # conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+                # shapes.append(H_X.shape)
                 # print(conv_layer)
-                for x in conv_layer:
-                    layers.append(x)
+                # for x in conv_layer:
+                    # layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         # print(shapes)
