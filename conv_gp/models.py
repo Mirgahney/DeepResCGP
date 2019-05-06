@@ -427,7 +427,7 @@ class ModelBuilder(object):
 
                 conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
                 
-                H_X = np.concatenate((shortcut, H_X) axis=3)
+                H_X = np.concatenate((shortcut, H_X), axis=3)
                 
                 shapes.append(H_X.shape)
                 # print(conv_layer)
