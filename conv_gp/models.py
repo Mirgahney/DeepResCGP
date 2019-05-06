@@ -431,7 +431,7 @@ class ModelBuilder(object):
                 npad = ((0,0),(1,1),(1,1),(0,0))
                 H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
                 
-                conv_layer, H_X = self._conv_layer(H_X, M, 2, 3, 1, 'VALID', layer_params, pad = 0)
+                conv_layer, H_X = self._conv_layer(H_X, M, 2, 3, 1, 'VALID', layer_params, pad = 1)
                 
                 print('shortcut shape: ', shortcut.shape)
                 print('H_X shape: ', H_X.shape)
