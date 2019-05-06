@@ -421,8 +421,8 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            
-            for i in range(int(feature_maps/2)):
+            n = int(feature_maps/2)
+            for i in range(n):
                 shortcut = H_X
 
                 conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
