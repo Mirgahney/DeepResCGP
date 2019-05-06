@@ -421,7 +421,7 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            n = int(feature_maps/2)
+            n = int(feature_map/2)
             for i in range(n):
                 shortcut = H_X
 
