@@ -71,7 +71,7 @@ class ModelBuilder(object):
         #         loaded_parameters)
         # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
         #         loaded_parameters = loaded_parameters)
-        
+
         conv_layers, H_X = self._dens_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
                 loaded_parameters = loaded_parameters)
 
@@ -411,7 +411,7 @@ class ModelBuilder(object):
         # print(len(feature_maps))
         return layers, H_X
 
-        def _dens_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
+    def _dens_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
         H_X = self.X_train
         layers = []
         shapes = []
