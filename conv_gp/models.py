@@ -423,6 +423,8 @@ class ModelBuilder(object):
             layer_params = loaded_parameters.get(i)
 
             conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
+            
+            layers.append(conv_layer)
 
             n = int(feature_map/2)
             for i in range(n-1):
