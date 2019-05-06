@@ -69,8 +69,12 @@ class ModelBuilder(object):
 
         # conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
         #         loaded_parameters)
-        conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        #         loaded_parameters = loaded_parameters)
+        
+        conv_layers, H_X = self._dens_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
                 loaded_parameters = loaded_parameters)
+
         print('layers ', conv_layers)
         print('befor last layer ', H_X.shape)
         last_layer_parameters = self._last_layer_parameters(loaded_parameters)
@@ -392,6 +396,42 @@ class ModelBuilder(object):
             shapes.append(H_X.shape)
                 # print(conv_layer)
             layers.append(conv_layer)
+
+            # for j in range(res_blocks):
+            #     print('Build residual block ', str(j+1))
+            #     # print('shape befor residual ', H_X.shape)
+            #     conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+            #     shapes.append(H_X.shape)
+            #     # print(conv_layer)
+            #     for x in conv_layer:
+            #         layers.append(x)
+            # print('shape after residual ',H_X.shape)
+            # print(layers)
+        # print(shapes)
+        # print(len(feature_maps))
+        return layers, H_X
+
+        def _dens_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
+        H_X = self.X_train
+        layers = []
+        shapes = []
+        for i in range(len(feature_maps)):
+            M = Ms[i]
+            feature_map = feature_maps[i]
+            filter_size = filter_sizes[i]
+            stride = strides[i]
+            layer_params = loaded_parameters.get(i)
+            
+            for i in range(int(feature_maps/2)):
+                shortcut = H_X
+
+                conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
+                
+                H_X = np.concatenate((shortcut, H_X) axis=3)
+                
+                shapes.append(H_X.shape)
+                # print(conv_layer)
+                layers.append(conv_layer)
 
             # for j in range(res_blocks):
             #     print('Build residual block ', str(j+1))
