@@ -421,11 +421,17 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            n = int(feature_map/2)
-            for i in range(n):
-                shortcut = H_X
 
-                conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
+            conv_layer, H_X = self._conv_layer(H_X, M, 2, filter_size, stride, 'VALID', layer_params, pad = 0)
+
+            n = int(feature_map/2)
+            for i in range(n-1):
+                shortcut = H_X
+                
+                npad = ((0,0),(1,1),(1,1),(0,0))
+                H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
+                
+                conv_layer, H_X = self._conv_layer(H_X, M, 2, 3, 1, 'VALID', layer_params, pad = 0)
                 
                 print('shortcut shape: ', shortcut.shape)
                 print('H_X shape: ', H_X.shape)
