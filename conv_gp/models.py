@@ -400,7 +400,7 @@ class ModelBuilder(object):
             npad = ((0,0),(1,1),(1,1),(0,0))
             H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_1'
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
             layers.append(conv_layer)
 
             # for j in range(res_blocks):
