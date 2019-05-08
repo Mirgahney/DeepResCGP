@@ -399,7 +399,7 @@ class ModelBuilder(object):
             # padding
             npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
             # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
-            H_X = tf.pad(H_X, npad, mode='CONSTANT', constant_values=0)
+            H_X = tf.pad(H_X, npad, mode='SYMMETRIC', constant_values=0)
 
             with tf.Session() as sss:
                 H_X = sss.run(H_X) 
