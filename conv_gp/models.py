@@ -69,11 +69,11 @@ class ModelBuilder(object):
 
         # conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
         #         loaded_parameters)
-        # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
-        #         loaded_parameters = loaded_parameters)
-
-        conv_layers, H_X = self._dens_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
                 loaded_parameters = loaded_parameters)
+
+        # conv_layers, H_X = self._dens_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        #         loaded_parameters = loaded_parameters)
 
         print('layers ', conv_layers)
         print('befor last layer ', H_X.shape)
@@ -354,10 +354,10 @@ class ModelBuilder(object):
         res_layers.append(conv_layer)
         # H_X = self._bn(H_X, name='bn_2')
 
-        H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
+        # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
-        conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_2'
-        res_layers.append(conv_layer)
+        # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_2'
+        # res_layers.append(conv_layer)
         # H_X = self._bn(H_X, name='bn_2')
 
         H_X = H_X + shortcut
