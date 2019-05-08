@@ -360,7 +360,7 @@ class ModelBuilder(object):
         # res_layers.append(conv_layer)
         # H_X = self._bn(H_X, name='bn_2')
 
-        H_X = H_X + shortcut
+        # H_X = H_X + shortcut
 
         return res_layers, H_X
 
