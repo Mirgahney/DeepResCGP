@@ -409,9 +409,9 @@ class ModelBuilder(object):
 
             ### backward residual
             shortcut = H_X
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
             layers.append(conv_layer)
-            
+
             npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
             H_X = tf.pad(H_X, npad, mode='CONSTANT')
             with tf.Session() as sss:
