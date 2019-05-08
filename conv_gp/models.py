@@ -396,15 +396,21 @@ class ModelBuilder(object):
             shapes.append(H_X.shape)
                 # print(conv_layer)
             layers.append(conv_layer)
+            # padding
+            npad = ((0,0),(1,1),(1,1),(0,0))
+            H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
-            for j in range(res_blocks):
-                print('Build residual block ', str(j+1))
-                # print('shape befor residual ', H_X.shape)
-                conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
-                shapes.append(H_X.shape)
-                # print(conv_layer)
-                for x in conv_layer:
-                    layers.append(x)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1) # 'conv_1'
+            layers.append(conv_layer)
+
+            # for j in range(res_blocks):
+            #     print('Build residual block ', str(j+1))
+            #     # print('shape befor residual ', H_X.shape)
+            #     conv_layer, H_X = self._residual_block(H_X = H_X, M = M, feature_map = feature_map, filter_size = 3, stride = 1, layer_params = layer_params,  name = ('unit ' + str(j+1)))
+            #     shapes.append(H_X.shape)
+            #     # print(conv_layer)
+            #     for x in conv_layer:
+            #         layers.append(x)
             # print('shape after residual ',H_X.shape)
             # print(layers)
         # print(shapes)
