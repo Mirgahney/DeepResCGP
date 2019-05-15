@@ -220,3 +220,11 @@ def inter_pad_4d(x, by = 1):
     rown, cols = x.shape[1:3]
     
     return np.insert(np.insert(x,by*list(range(1,cols)),0, axis=2), by*list(range(1,rown)),0, axis=1)
+
+def pad_with_mean(tensor, pad_with):
+    
+    n, h, w, c = tensor.shape
+    result = np.pad(tensor[:,:,:,0:1], pad_width=pad_with, mode='mean')
+    for i in range(1,c):
+        result = np.concatenate((result, np.pad(tensor[:,:,:,i:i+1], pad_width=pad_with, mode='mean')), axis = 3)
+    return result

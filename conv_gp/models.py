@@ -398,12 +398,14 @@ class ModelBuilder(object):
             layers.append(conv_layer)
             if i == 0:
             # padding
-                npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
+                # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
-                H_X = tf.pad(H_X, npad, mode='REFLECT')
 
-                with tf.Session() as sss:
-                    H_X = sss.run(H_X) 
+                H_X = utils_res.pad_with_mean(H_X, npad)
+                # H_X = tf.pad(H_X, npad, mode='REFLECT')
+
+                # with tf.Session() as sss:
+                #     H_X = sss.run(H_X) 
 
                 conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
                 layers.append(conv_layer)
