@@ -234,6 +234,6 @@ def pad_with_mean_2(tensor, pad_with):
     n, h, w, c = tensor.shape
     result = np.pad(tensor[0:1,:,:,0:1], pad_width=pad_with, mode='mean')
     for j in range(1,n):
-	    for i in range(1,c):
+        for i in range(1,c):
             result = np.concatenate((result, np.pad(tensor[j:j+1,:,:,i:i+1], pad_width=pad_with, mode='mean')), axis = 3)
     return result
