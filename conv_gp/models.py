@@ -399,6 +399,7 @@ class ModelBuilder(object):
             if i == 0:
             # padding
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
+                npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
                 H_X = utils_res.pad_with_mean(H_X, npad)
