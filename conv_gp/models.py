@@ -402,7 +402,7 @@ class ModelBuilder(object):
                 npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
-                H_X = utils_res.pad_with_mean(H_X, npad)
+                H_X = utils_res.pad_with_mean_2(H_X, npad)
                 # H_X = tf.pad(H_X, npad, mode='REFLECT')
 
                 # with tf.Session() as sss:
