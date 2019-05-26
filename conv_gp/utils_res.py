@@ -231,11 +231,11 @@ def pad_with_mean(tensor, pad_with, mode='mean'):
     elif mode == 'linear_ramp':
         a = tensor[:,:,:,0:1]
         m, mv = (np.mean(a), np.std(a)) 
-        result = np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, mv))
+        result = np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, m + mv))
         for i in range(1, c):
             a = tensor[:,:,:,i:i+1]
             m, mv = (np.mean(a), np.std(a)) 
-            result = np.concatenate((result, np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, mv))), axis = 3)  
+            result = np.concatenate((result, np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, m + mv))), axis = 3)  
     return result
 
 def pad_with_mean_2(tensor, pad_with):
