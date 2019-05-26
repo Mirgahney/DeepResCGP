@@ -221,12 +221,21 @@ def inter_pad_4d(x, by = 1):
     
     return np.insert(np.insert(x,by*list(range(1,cols)),0, axis=2), by*list(range(1,rown)),0, axis=1)
 
-def pad_with_mean(tensor, pad_with):
+def pad_with_mean(tensor, pad_with, mode='mean'):
     
     n, h, w, c = tensor.shape
-    result = np.pad(tensor[:,:,:,0:1], pad_width=pad_with, mode='mean')
-    for i in range(1,c):
-        result = np.concatenate((result, np.pad(tensor[:,:,:,i:i+1], pad_width=pad_with, mode='mean')), axis = 3)
+    if mode == 'mean':
+        result = np.pad(tensor[:,:,:,0:1], pad_width=pad_with, mode='mean')
+        for i in range(1,c):
+            result = np.concatenate((result, np.pad(tensor[:,:,:,i:i+1], pad_width=pad_with, mode='mean')), axis = 3)
+    elif mode == 'linear_ramp':
+        a = tensor[:,:,:,0:1]
+        m, mv = (np.mean(a), np.std(a)) 
+        result = np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, mv))
+        for i in range(1, c):
+            a = tensor[:,:,:,i:i+1]
+            m, mv = (np.mean(a), np.std(a)) 
+            result = np.concatenate((result, np.pad(a, pad_width=pad_with, mode='linear_ramp', end_values=(m, mv))), axis = 3)  
     return result
 
 def pad_with_mean_2(tensor, pad_with):
