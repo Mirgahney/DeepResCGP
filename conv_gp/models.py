@@ -395,7 +395,7 @@ class ModelBuilder(object):
             npad = ((0,0),(1,1),(1,1),(0,0))
             H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 3)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
             shapes.append(H_X.shape)
                 # print(conv_layer)
             layers.append(conv_layer)
