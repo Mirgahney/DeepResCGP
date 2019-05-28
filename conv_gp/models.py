@@ -392,7 +392,7 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
             shapes.append(H_X.shape)
                 # print(conv_layer)
             layers.append(conv_layer)
