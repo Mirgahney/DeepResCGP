@@ -252,7 +252,7 @@ def pad_with_list(tensor, pad_with, mode = 'constant', constant_values = [0]):
     n, h, w, c = tensor.shape
     assert c == len(constant_values), 'pad_with list should be same size as input tensor chanels'
     
-    result = np.pad(tensor[:,:,:,0:1], pad_width=npad, mode='constant', constant_values=constant_values[0])
+    result = np.pad(tensor[:,:,:,0:1], pad_width=pad_with, mode='constant', constant_values=constant_values[0])
     for i in range(1, c):
         result = np.concatenate((result, np.pad(tensor[:,:,:,i:i+1], pad_width=pad_with, mode='constant', constant_values=constant_values[i])), axis =3)
     return result
