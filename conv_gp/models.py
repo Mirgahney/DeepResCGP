@@ -391,9 +391,6 @@ class ModelBuilder(object):
             filter_size = filter_sizes[i]
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
-            
-            npad = ((0,0),(1,1),(1,1),(0,0))
-            H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
 
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
             shapes.append(H_X.shape)
@@ -404,14 +401,15 @@ class ModelBuilder(object):
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
                 npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
+                _, H_X_pad = self._conv_layer(H_X, M, feature_map, 12, 1, 'VALID', layer_params, pad = 0)
 
-                # H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
+                H_X = utils_res.pad_with_list(H_X, npad, constant_values = list(H_X_pad[0,0,0,:]))
                 # H_X = tf.pad(H_X, npad, mode='REFLECT')
 
                 # with tf.Session() as sss:
                 #     H_X = sss.run(H_X) 
 
-                # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
                 # layers.append(conv_layer)
 
             ### backward residual
