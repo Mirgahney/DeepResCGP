@@ -410,7 +410,7 @@ class ModelBuilder(object):
                 #     H_X = sss.run(H_X) 
 
                 conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 1) # 'conv_1'
-                # layers.append(conv_layer)
+                layers.append(conv_layer)
 
             ### backward residual
             # shortcut = H_X
