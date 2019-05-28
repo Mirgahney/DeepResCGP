@@ -394,8 +394,8 @@ class ModelBuilder(object):
             
             npad = ((0,0),(1,1),(1,1),(0,0))
             H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
-            
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
+
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 2)
             shapes.append(H_X.shape)
                 # print(conv_layer)
             layers.append(conv_layer)
@@ -405,7 +405,7 @@ class ModelBuilder(object):
                 npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
 
-                H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
+                # H_X = utils_res.pad_with_mean(H_X, npad, 'linear_ramp')
                 # H_X = tf.pad(H_X, npad, mode='REFLECT')
 
                 # with tf.Session() as sss:
