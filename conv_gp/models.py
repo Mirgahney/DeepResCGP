@@ -424,8 +424,8 @@ class ModelBuilder(object):
                 # with tf.Session() as sss:
                 #     H_X = sss.run(H_X) 
 
-                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
-                layers.append(conv_layer)
+                # conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
+                # layers.append(conv_layer)
 
             ### backward residual
             # shortcut = H_X
