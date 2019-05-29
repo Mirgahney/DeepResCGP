@@ -67,10 +67,10 @@ class ModelBuilder(object):
         assert len(strides) == len(filter_sizes)
         assert len(feature_maps) == (len(Ms) - 1)
 
-        # conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
-        #         loaded_parameters)
-        conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
-                loaded_parameters = loaded_parameters)
+        conv_layers, H_X = self._conv_layers(Ms[0:-1], feature_maps, strides, filter_sizes,
+                loaded_parameters)
+        # conv_layers, H_X = self._res_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
+        #         loaded_parameters = loaded_parameters)
 
         # conv_layers, H_X = self._dens_conv_layers(Ms = Ms[0:-1], feature_maps = feature_maps, strides = strides, filter_sizes = filter_sizes,
         #         loaded_parameters = loaded_parameters)
@@ -405,10 +405,10 @@ class ModelBuilder(object):
                 # print(conv_layer)
             layers.append(conv_layer)
 
-            # if i % 2 != 0:
+            if i % 2 != 0:
 
-            #     conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 5, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
-            #     layers.append(conv_layer)
+                conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 5, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
+                layers.append(conv_layer)
 
             # if i == 0:
             # padding
