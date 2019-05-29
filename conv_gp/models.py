@@ -404,7 +404,7 @@ class ModelBuilder(object):
 
                 # print(conv_layer)
             layers.append(conv_layer)
-            if i == 0:
+            # if i == 0:
             # padding
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
                 
