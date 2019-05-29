@@ -397,7 +397,7 @@ class ModelBuilder(object):
             stride = strides[i]
             layer_params = loaded_parameters.get(i)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 5, stride, 'VALID', layer_params, pad = 0)
             shapes.append(H_X.shape)
 
             # _, H_X_zeros = self._conv_layer(H_X_zeros, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
@@ -405,8 +405,10 @@ class ModelBuilder(object):
                 # print(conv_layer)
             layers.append(conv_layer)
 
-            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 5, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
-            layers.append(conv_layer)
+            # if i % 2 != 0:
+
+            #     conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 5, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
+            #     layers.append(conv_layer)
 
             # if i == 0:
             # padding
