@@ -383,10 +383,10 @@ class ModelBuilder(object):
     # need to be geralizable 
     def _res_conv_layers(self, Ms, feature_maps, strides, filter_sizes, res_blocks = 1, loaded_parameters={}):
         H_X = self.X_train
-        H_X_zeros = np.zeros_like(H_X)
+        # H_X_zeros = np.zeros_like(H_X)
 
-        npad = ((0,0),(1,1),(1,1),(0,0))
-        H_X_zeros = np.pad(H_X_zeros, pad_width=npad, mode='constant', constant_values=0)
+        # npad = ((0,0),(1,1),(1,1),(0,0))
+        # H_X_zeros = np.pad(H_X_zeros, pad_width=npad, mode='constant', constant_values=0)
 
         layers = []
         shapes = []
@@ -400,7 +400,7 @@ class ModelBuilder(object):
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
             shapes.append(H_X.shape)
 
-            _, H_X_zeros = self._conv_layer(H_X_zeros, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
+            # _, H_X_zeros = self._conv_layer(H_X_zeros, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
 
                 # print(conv_layer)
             layers.append(conv_layer)
@@ -416,11 +416,11 @@ class ModelBuilder(object):
                 # H_X = utils_res.pad_with_list(H_X, npad, constant_values = list(H_X_pad[0,0,0,:]))
                 # H_X = tf.pad(H_X, npad, mode='REFLECT')
 
-                print('padded zeros_like ', H_X_zeros.shape)
+                # print('padded zeros_like ', H_X_zeros.shape)
                 # H_X = np.pad(H_X, npad, mode = 'constant', constant_values=0)
                 # H_X[:,0:2,0:2,:] = H_X_zeros[:,0:2,0:2,:]
-                H_X_zeros[:,1:-1,1:-1,:] = H_X
-                H_X = H_X_zeros
+                # H_X_zeros[:,1:-1,1:-1,:] = H_X
+                # H_X = H_X_zeros
                 # with tf.Session() as sss:
                 #     H_X = sss.run(H_X) 
 
