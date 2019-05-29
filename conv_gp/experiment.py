@@ -116,10 +116,10 @@ class Experiment(object):
 
     def _init_logger(self):
         X_test = self.X_test.reshape(self.X_test.shape[0], -1)
-        X_train = self.X_train.reshape(self.X_train.shape[0], -1)
+        X_train = self.X_train[0:1000].reshape(self.X_train.shape[0], -1)
         loggers = [
             utils.GlobalStepLogger(),
-            utils.AccuracyLogger(X_train, self.Y_train),
+            utils.AccuracyLogger(X_train, self.Y_train[0:1000]),
             utils.AccuracyLogger(X_test, self.Y_test),
         ]
         self.log = utils.Log(self.flags.log_dir,
