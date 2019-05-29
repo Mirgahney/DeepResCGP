@@ -404,6 +404,10 @@ class ModelBuilder(object):
 
                 # print(conv_layer)
             layers.append(conv_layer)
+
+            conv_layer, H_X = self._conv_layer(H_X, M, feature_map, 3, 1, 'VALID', layer_params, pad = 0) # 'conv_1'
+            layers.append(conv_layer)
+
             # if i == 0:
             # padding
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
