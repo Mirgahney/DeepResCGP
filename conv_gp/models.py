@@ -385,7 +385,7 @@ class ModelBuilder(object):
         H_X = self.X_train
         H_X_zeros = np.zeros_like(H_X)
 
-        npad = ((0,0),(2,2),(2,2),(0,0))
+        npad = ((0,0),(1,1),(1,1),(0,0))
         H_X_zeros = np.pad(H_X_zeros, pad_width=npad, mode='constant', constant_values=0)
 
         layers = []
@@ -400,14 +400,14 @@ class ModelBuilder(object):
             conv_layer, H_X = self._conv_layer(H_X, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 0)
             shapes.append(H_X.shape)
 
-            _, H_X_zeros = self._conv_layer(H_X_zeros, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 2)
+            _, H_X_zeros = self._conv_layer(H_X_zeros, M, feature_map, filter_size, stride, 'VALID', layer_params, pad = 1)
 
                 # print(conv_layer)
             layers.append(conv_layer)
             if i == 0:
             # padding
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
-
+                
                 # npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
                 # conv_layer_padd, H_X_pad = self._conv_layer(H_X, M, feature_map, 11, 1, 'VALID', layer_params, pad = 0)
