@@ -401,8 +401,9 @@ class ModelBuilder(object):
                 # npad = tf.constant([[0,0],[1,1],[1,1],[0,0]])
                 npad = ((0,0),(1,1),(1,1),(0,0))
                 # H_X = np.pad(H_X, pad_width=npad, mode='constant', constant_values=0) 
-                _, H_X_pad = self._conv_layer(H_X, M, feature_map, 11, 1, 'VALID', layer_params, pad = 0)
-
+                conv_layer_padd, H_X_pad = self._conv_layer(H_X, M, feature_map, 11, 1, 'VALID', layer_params, pad = 0)
+                layers.append(conv_layer_padd)
+                
                 H_X = utils_res.pad_with_list(H_X, npad, constant_values = list(H_X_pad[0,0,0,:]))
                 # H_X = tf.pad(H_X, npad, mode='REFLECT')
 
