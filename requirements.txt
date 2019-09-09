@@ -4,4 +4,4 @@ Observations>=0.1.4
 toml>=0.9
 scikit-learn>=0.19.1
 requests
-
+tqdm
